@@ -1,7 +1,16 @@
 import React from "react";
+import GlobalStyle from "./styles/GlobalStyle";
+import Router from "./Router";
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
 
 function App() {
-  return <div className="App"></div>;
+  return (
+    <Provider store={store}>
+      <GlobalStyle />
+      <Router />
+    </Provider>
+  );
 }
 
 export default App;
