@@ -1,35 +1,35 @@
 import ProductList from "../components/ProductList";
-import { ProductProps } from "../model/products";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../redux/store";
-import { add, remove } from "../redux/productsSlice";
+import { loadProducts } from "../redux/productsSlice";
+import { useEffect } from "react";
+import styled from "styled-components";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../redux/store";
 
 function Main(): JSX.Element {
-  const [data, setData] = useState<any[]>([]);
-
-  const productList = useSelector((state: RootState) => state);
-  const dispatch = useDispatch<AppDispatch>();
-  console.log(1);
+  const products = useSelector((state: RootState) => state.products);
+  const dispatch = useDispatch();
   const getProducts = async () => {
     const productsSnapshot = await getDocs(collection(db, "products")); // 데이터 요청
-    const productsList = productsSnapshot.docs.map((doc) => doc.data());
-    console.log(productsList);
     const products: any[] = [];
-    productsSnapshot.docs.map((doc) => {
-      products.push(doc.data());
-    });
-    setData(productsList);
+    productsSnapshot.docs.map((doc) => products.push(doc.data()));
+    dispatch(loadProducts(products));
   };
-  getProducts();
+  console.log(products);
 
   useEffect(() => {
-    console.log(551);
+    getProducts();
   }, []);
 
-  return <ProductList data={data} />;
+  return (
+    <>
+      <FetchButton>click here to fetch data</FetchButton>
+      {/* <ProductList data={products} /> */}
+    </>
+  );
 }
 
 export default Main;
+
+const FetchButton = styled.div``;

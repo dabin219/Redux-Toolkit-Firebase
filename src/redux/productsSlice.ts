@@ -7,22 +7,11 @@ const productsSlice = createSlice({
   name: "products",
   initialState,
   reducers: {
-    add: {
-      reducer: (state, action: PayloadAction<ProductProps>) => {
-        state.push(action.payload);
-      },
-      prepare: (description: ProductProps) => ({
-        payload: {} as ProductProps,
-      }),
-    },
-    remove(state, action: PayloadAction<string>) {
-      const index = state.findIndex(
-        (product) => product.name === action.payload
-      );
-      state.splice(index, 1);
+    loadProducts: (state, action) => {
+      state.push(action.payload);
     },
   },
 });
 
-export const { add, remove } = productsSlice.actions;
+export const { loadProducts } = productsSlice.actions;
 export default productsSlice.reducer;

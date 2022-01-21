@@ -1,7 +1,7 @@
 import { ProductProps } from "../model/products";
 import ThemeColor from ".././constant/color";
 import styled from "styled-components";
-import { add, remove } from "../redux/productsSlice";
+import { add, remove } from "../redux/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store";
 
