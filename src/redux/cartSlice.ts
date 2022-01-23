@@ -7,17 +7,17 @@ const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    add: {
-      reducer: (state, action: PayloadAction<ProductProps>) => {
+    add(state, action) {
+      const isExisting = state.find(
+        (product) => product.id === action.payload.id
+      );
+      if (!isExisting) {
         state.push(action.payload);
-      },
-      prepare: (description: ProductProps) => ({
-        payload: {} as ProductProps,
-      }),
+      }
     },
-    remove(state, action: PayloadAction<string>) {
+    remove(state, action) {
       const index = state.findIndex(
-        (product) => product.name === action.payload
+        (product) => product.id === action.payload.id
       );
       state.splice(index, 1);
     },

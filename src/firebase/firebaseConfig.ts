@@ -1,5 +1,4 @@
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -11,10 +10,7 @@ const firebaseConfig = {
   appId: "1:1031601853786:web:fe338096782fa051fc4f63",
 };
 
-// 초기화
-const firebaseApp = initializeApp(firebaseConfig);
+const firebase = initializeApp(firebaseConfig);
 
-// 사용기능 생성 및 export
-export const auth = getAuth(firebaseApp);
-export const db = getFirestore(firebaseApp);
-export default firebaseApp;
+export const db = getFirestore(firebase);
+export default firebase;
