@@ -1,29 +1,32 @@
 import ProductList from "../components/ProductList";
 import ProductCard from "../components/ProductCard";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "../firebase/firebaseConfig";
-import { addProducts } from "../redux/productsSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../redux/store";
 import styled from "styled-components";
+import { getProducts } from "../redux/productsSlice";
+import { Oval } from "react-loader-spinner";
 
 function Main(): JSX.Element {
-  const products = useSelector((state: RootState) => state.products);
+  const { data, loading } = useSelector((state: RootState) => state.products);
   const dispatch = useDispatch();
-
-  const getProducts = async () => {
-    const productsSnapshot = await getDocs(collection(db, "products"));
-    const newProducts: Array<any> = [];
-    productsSnapshot.docs.map((doc) => newProducts.push(doc.data()));
-    dispatch(addProducts(newProducts));
+  const fetchData = () => {
+    dispatch(getProducts());
   };
+
+  if (loading) {
+    return (
+      <Loader>
+        <Oval color="black" height={100} width={100} />
+      </Loader>
+    );
+  }
 
   return (
     <Container>
-      <FetchButton onClick={getProducts}>click here to fetch data</FetchButton>
-      {products.length && (
+      <FetchButton onClick={fetchData}>click here to fetch data</FetchButton>
+      {data.length && (
         <ProductList title="PRODUCT LIST">
-          {products.map((product) => (
+          {data.map((product) => (
             <ProductCard key={product.id} data={product} />
           ))}
         </ProductList>
@@ -48,4 +51,11 @@ const FetchButton = styled.div`
   text-align: center;
   font-weight: 800;
   cursor: pointer;
+`;
+
+const Loader = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
 `;
